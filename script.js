@@ -1,40 +1,11 @@
-/*
- * Star Wars opening crawl from 1977
- * 
- * I freaking love Star Wars, but could not find
- * a web version of the original opening crawl from 1977.
- * So I created this one.
- *
- * I wrote an article where I explain how this works:
- * http://timpietrusky.com/star-wars-opening-crawl-from-1977
- * 
- * Watch the Start Wars opening crawl on YouTube.
- * https://www.youtube.com/watch?v=7jK-jZo6xjY
- * 
- * Stuff I used:
- * - CSS (animation, transform)
- * - HTML audio (the opening theme)
- * - SVG (the Star Wars logo from wikimedia.org)
- *   http://commons.wikimedia.org/wiki/File:Star_Wars_Logo.svg
- * - JavaScript (to sync the animation/audio)
- *
- * Thanks to Craig Buckler for his amazing article 
- * which helped me to create this remake of the Star Wars opening crawl. 
- * http://www.sitepoint.com/css3-starwars-scrolling-text/ 
- *
- * Sound copyright by The Walt Disney Company.
- * 
- *
- * 2013 by Tim Pietrusky
- * timpietrusky.com
- * 
- */
+
 StarWars = (function() {
   
   /* 
    * Constructor
    */
   function StarWars(args) {
+    
     // Context wrapper
     this.el = $(args.el);
     
@@ -44,6 +15,9 @@ StarWars = (function() {
     // Start the animation
     this.start = this.el.find('.start');
     
+        // ending of the animation
+    this.ending = this.el.find('.ending');
+    
     // The animation wrapper
     this.animation = this.el.find('.animation');
     
@@ -51,16 +25,19 @@ StarWars = (function() {
     this.reset();
 
     // Start the animation on click
+    
     this.start.bind('click', $.proxy(function() {
+      //this.ending.show()//bubba commenta questo
       this.start.hide();
+      //bubba commenta le 2 linee seguenti per arrivare alla fine 
       this.audio.play();
-      this.el.append(this.animation);
+     this.el.append(this.animation);
     }, this));
     
     // Reset the animation and shows the start screen
     $(this.audio).bind('ended', $.proxy(function() {
       this.audio.currentTime = 0;
-      this.reset();
+      this.end();
     }, this));
   }
   
@@ -68,10 +45,15 @@ StarWars = (function() {
    * Resets the animation and shows the start screen.
    */
   StarWars.prototype.reset = function() {
-    this.start.show();
     this.cloned = this.animation.clone(true);
     this.animation.remove();
     this.animation = this.cloned;
+  };
+  StarWars.prototype.end = function() {
+    this.cloned = this.animation.clone(true);
+    this.animation.remove();
+    this.animation = this.cloned;
+    this.ending.show()
   };
 
   return StarWars;
@@ -80,3 +62,37 @@ StarWars = (function() {
 new StarWars({
   el : '.starwars'
 });
+
+
+//the background
+//Get context and screen size;
+var ctx = cnv.getContext("2d");
+var W = window.innerWidth;
+var H = window.innerHeight;
+
+//Set Canvas and Background Color;
+cnv.width = W;
+cnv.height = H;
+ctx.fillStyle = "#112";
+ctx.fillRect(0, 0, W, H);
+
+//Glow effect;
+ctx.shadowBlur = 10;
+ctx.shadowColor = "white";
+
+function animate() {
+  //Random position and size of stars;
+  let x = W * Math.random();
+  let y = H * Math.random();
+  let r = 2.5 * Math.random();
+
+  //Draw the stars;
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  //Using setTimeout instead of window.requestAnimationFrame for slower speed... window.requestAnimationFrame is approximately equal to setTimeout(func, 17);
+  setTimeout(animate, 100);
+}
+animate();
