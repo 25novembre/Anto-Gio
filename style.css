@@ -272,14 +272,14 @@ a.my-button:active {
   transform: scale(0.95);
 }
 
-h1 {
-  font-size: 5.5em; /* 40px/16=2.5em */
+.ending h1 {
+  font-size: 2.5em; /* 40px/16=2.5em */
 }
 
-h2 {
-  font-size: 3.875em; /* 30px/16=1.875em */
+.ending h2 {
+  font-size: 2.875em; /* 30px/16=1.875em */
 }
 
-p {
-  font-size: 2.875em; /* 14px/16=0.875em */
+.ending h6 {
+  font-size: 1.875em; /* 14px/16=0.875em */
 }
